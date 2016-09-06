@@ -7,22 +7,38 @@ var request = require('request');
 router.get('/', function(req, res, next) {
 
     var sort = req.query.sort;
-    request({
-            method: 'GET',
-            url: 'http://swapi.co/api/people'
+    var onlyResults = [];
+    queryRequest(0);
+    function queryRequest(k){
+        request({
+                method: 'GET',
+                url: 'http://swapi.co/api/people'
 
-        },
-        function (error, response, body) {
-            if (error) {
-                return console.error(error);
-            }
-            var parsedResponse = JSON.parse(body);
-            var onlyResults = parsedResponse.results;
-            sortValues(onlyResults, sort);
-            console.log(onlyResults);
+            },
+            function (error, response, body) {
+                if (error) {
+                    return console.error(error);
+                }
+                var parsedResponse = JSON.parse(body);
 
-            res.send(onlyResults);
-        })
+                console.log(onlyResults, "onlyResults");
+                if(onlyResults.length <50){
+                    queryRequest(k+1);
+                    for(var i=0; i <parsedResponse.results.length; i++){
+                        onlyResults.push(parsedResponse.results[i]) ;
+                    }
+
+                }else {
+                    sortValues(onlyResults, sort);
+                    console.log(onlyResults);
+                    res.send(onlyResults);
+                }
+
+
+            })
+    }
+
+
    // res.render('pages/characters');
 
     //res.send('respond with a resource');
