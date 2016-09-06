@@ -19,7 +19,7 @@ router.get('/:name', function(req, res, next) {
             var nameResponse = {};
             for (var i =0 ; i<response.results.length ; i++){
 
-                    if(response.results[i].name.startsWith(name)){
+                    if(response.results[i].name.toLowerCase().startsWith(name)){
                         nameResponse = response.results[i];
                         break;
                     }

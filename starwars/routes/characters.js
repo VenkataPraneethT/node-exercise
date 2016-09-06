@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
             if (error) {
                 return console.error(error);
             }
-            console.log('got response', body);
+            console.log(body.results);
             res.send(body.results);
         })
    // res.render('pages/characters');
