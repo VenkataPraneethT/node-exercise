@@ -7,7 +7,6 @@ var request = require('request');
 router.get('/', function(req, res, next) {
 
     var sort = req.query.sort;
-    console.log("came here",sort);
     request({
             method: 'GET',
             url: 'http://swapi.co/api/people'
@@ -17,12 +16,45 @@ router.get('/', function(req, res, next) {
             if (error) {
                 return console.error(error);
             }
-            console.log(body.results);
-            res.send(body.results);
+            var parsedResponse = JSON.parse(body);
+            var onlyResults = parsedResponse.results;
+            sortValues(onlyResults, sort);
+            console.log(onlyResults);
+
+            res.send(onlyResults);
         })
    // res.render('pages/characters');
 
     //res.send('respond with a resource');
+    function sortValues(respon, sortBy)
+    {
+        if(sortBy == 'mass'){
+            respon.sort(function(x, y) {
+
+                return parseFloat(x.mass) - parseFloat(y.mass);
+            });
+
+        }
+        else if(sortBy == 'height'){
+            respon.sort(function(x, y) {
+
+                return parseFloat(x.height) - parseFloat(y.height);
+            });
+
+        }
+        else if(sortBy == 'name'){
+            respon.sort(function(x,y) {
+                if ( x.name.toLowerCase() < y.name.toLowerCase() )
+                    return -1;
+                if ( x.name.toLowerCase() > y.name.toLowerCase() )
+                    return 1;
+                return 0;
+            } );
+
+        }
+
+
+    }
 });
 
 module.exports = router;
