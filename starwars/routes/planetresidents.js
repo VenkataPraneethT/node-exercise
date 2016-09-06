@@ -28,21 +28,21 @@ router.get('/', function(req, res, next) {
             function residentsRes (k){
 
                 var peopleResponse;
-
+             //   console.log(residentsResponse, k,planetResponses.results.length -1, "finally ended" );
                 if(k < planetResponses.results.length){
                     //peopleRes(responses.residents[j]);
                     planetName = planetResponses.results[k].name;
                     peopleRes(j);
 
 
-                }else if(k == planetResponses.results.length -1){
-                    console.log(residentsResponse);
+                }else if(k == planetResponses.results.length ){
+                    console.log(residentsResponse, k,planetResponses.results.length -1, "finally ended" );
                     res.send(residentsResponse);
                 }
 
                 function peopleRes (j){
 
-
+                    // console.log(j , planetResponses.results[k].residents.length, "increments");
                     if( j < planetResponses.results[k].residents.length ) {
                         request({
                                 method: 'GET',
@@ -58,11 +58,14 @@ router.get('/', function(req, res, next) {
                                     residentsResponse[planetName] = people;
                                     console.log(j , planetResponses.results[k].residents.length -1)
                                     if(j== planetResponses.results[k].residents.length -1){
+
                                         people = [];
+                                        j=0;
                                         residentsRes(k+1);
                                         //return residentsResponse;
                                     }
                                     else{
+
                                         peopleRes(j+1);
                                     }
 
@@ -72,6 +75,9 @@ router.get('/', function(req, res, next) {
 
 
                             });
+                    }
+                    else if(j == planetResponses.results[k].residents.length && j ==0 && planetResponses.results[k].residents.length==0  && k <planetResponses.results.length){
+                        residentsRes(k+1);
                     }
 
 
