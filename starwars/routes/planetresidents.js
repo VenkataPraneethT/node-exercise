@@ -34,7 +34,6 @@ router.get('/', function(req, res, next) {
                     planetName = planetResponses.results[k].name;
                     peopleRes(j);
 
-
                 }else if(k == planetResponses.results.length ){
                     console.log(residentsResponse, k,planetResponses.results.length -1, "finally ended" );
                     res.send(residentsResponse);
