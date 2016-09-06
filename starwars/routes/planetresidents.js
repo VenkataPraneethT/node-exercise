@@ -21,83 +21,114 @@ router.get('/', function(req, res, next) {
             var planetName ;
         //    var urls = [];
             var people = [];
-            var i =0;
-            var j =0;
-            for (var i =0 ; i<planetResponses.results.length ; i++){
-         //   while(i< planetResponses.results.length){
-                    planetName = planetResponses.results[i].name;
+            var j=0;
+           // console.log(planetResponses.results, "planetresponse");
+            residentsRes(0);
 
-                var len = planetResponses.results[i].residents.length;
-                   // urls.push(planetResponses.results[i].name) ;
-                for (var j =0 ; j< len; j++){
-            //    while(j < len){
-                    console.log(planetName, "planeName");
-                  //  urls.push(planetResponses.results[i].residents[j]);
-                    // console.log(planetResponses.results[i].residents[j], "planets");
-                   // request({
-                   //          method: 'GET',
-                   //          url: planetResponses.results[i].residents[j]
-                   //
-                   //      },
-                   //      function (error, response, body) {
-                   //
-                   //          if(body){
-                   //              var peopleResponses = JSON.parse(body);
-                   //
-                   //              people.push(peopleResponses.name);
-                   //              residentsResponse[planetName] = people;
-                   //              if((i == planetResponses.results.length) && (j == len)){
-                   //                  // console.log(residentsResponse,"residentsResponse");
-                   //                  //res.send(residentsResponse);
-                   //              }
-                   //
-                   //          }
-                   //
-                   //
-                   //      });
+            function residentsRes (k){
+
+                var peopleResponse;
+
+                if(k < planetResponses.results.length){
+                    //peopleRes(responses.residents[j]);
+                    planetName = planetResponses.results[k].name;
+                    peopleRes(j);
+
+
+                }else if(k == planetResponses.results.length -1){
+                    console.log(residentsResponse);
+                    res.send(residentsResponse);
+                }
+
+                function peopleRes (j){
+
+
+                    if( j < planetResponses.results[k].residents.length ) {
+                        request({
+                                method: 'GET',
+                                url: planetResponses.results[k].residents[j]
+
+                            },
+                            function (error, response, body) {
+
+                                if(body){
+                                    var peopleResponses = JSON.parse(body);
+
+                                    people.push(peopleResponses.name);
+                                    residentsResponse[planetName] = people;
+                                    console.log(j , planetResponses.results[k].residents.length -1)
+                                    if(j== planetResponses.results[k].residents.length -1){
+                                        people = [];
+                                        residentsRes(k+1);
+                                        //return residentsResponse;
+                                    }
+                                    else{
+                                        peopleRes(j+1);
+                                    }
+
+                                }else {
+                                    return error;
+                                }
+
+
+                            });
+                    }
 
 
                 }
 
-             //   people = [];
             }
+
+
+
+         //    for (var i =0 ; i<planetResponses.results.length ; i++){
+         // //   while(i< planetResponses.results.length){
+         //            planetName = planetResponses.results[i].name;
+         //
+         //        var len = planetResponses.results[i].residents.length;
+         //
+         //           // urls.push(planetResponses.results[i].name) ;
+         //     //   for (var j =0 ; j< len; j++){
+         //    //    while(j < len){
+         //          //  urls.push(planetResponses.results[i].residents[j]);
+         //            // console.log(planetResponses.results[i].residents[j], "planets");
+         //           // request({
+         //           //          method: 'GET',
+         //           //          url: planetResponses.results[i].residents[j]
+         //           //
+         //           //      },
+         //           //      function (error, response, body) {
+         //           //
+         //           //          if(body){
+         //           //              var peopleResponses = JSON.parse(body);
+         //           //
+         //           //              people.push(peopleResponses.name);
+         //           //              residentsResponse[planetName] = people;
+         //           //              if((i == planetResponses.results.length) && (j == len)){
+         //           //                  // console.log(residentsResponse,"residentsResponse");
+         //           //                  //res.send(residentsResponse);
+         //           //              }
+         //           //
+         //           //          }
+         //           //
+         //           //
+         //           //      });
+         //
+         //
+         //       // }
+         //
+         //     //   people = [];
+         //    }
             //
         })
 
 });
 
-function peopleRes (urls, increments){
-
-    var i;
 
 
-    if( i < urls.length ) {
-        request({
-                method: 'GET',
-                url: urls[i]
-
-            },
-            function (error, response, body) {
-
-                if(body){
-                    var peopleResponses = JSON.parse(body);
-
-                    people.push(peopleResponses.name);
-                    residentsResponse[planetName] = people;
-                    i++;
-                    // if((i == planetResponses.results.length) && (j == len)){
-                    //
-                    // }
-
-                }else {
-                    console.log(error);
-                }
 
 
-            });
-    }
 
 
-}
 
 module.exports = router;
